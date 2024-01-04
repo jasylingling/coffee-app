@@ -19,7 +19,7 @@ type RootLayoutProps = {
 const RootLayout: FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
-      <body className={`${lexend.className} tracking-wide text-[var(--brown-primary)] antialiased`}>
+      <body className={`${lexend.className} text-brown-primary leading-relaxed tracking-wide antialiased`}>
         <Navigation />
         <main className="min-h-screen px-10 pt-36 lg:pl-80 lg:pr-16 lg:pt-16">{children}</main>
         <Footer />

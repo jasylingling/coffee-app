@@ -2,13 +2,12 @@ import { FC, ReactNode } from 'react';
 
 type HeaderProps = {
   children: ReactNode;
-  additionalClasses?: string;
 };
 
-const Header: FC<HeaderProps> = ({ children, additionalClasses }) => {
+const Header: FC<HeaderProps> = ({ children }) => {
   return (
-    <header className="pb-10">
-      <h1 className={`text-3xl font-medium ${additionalClasses}`}>{children}</h1>
+    <header className="pb-8">
+      <h1 className="text-3xl font-medium">{children}</h1>
     </header>
   );
 };

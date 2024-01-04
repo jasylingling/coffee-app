@@ -37,10 +37,10 @@ const Navigation: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed flex w-full flex-col bg-white drop-shadow-2xl lg:h-screen lg:w-64 lg:border-r lg:border-[var(--beige-secondary)] lg:filter-none">
-      <div className="wrapper flex justify-between border-b border-[var(--beige-secondary)] px-9 py-4 lg:justify-center lg:py-10">
+    <nav className="lg:border-beige-secondary fixed z-20 flex w-full flex-col bg-white drop-shadow-2xl lg:h-screen lg:w-64 lg:border-r lg:filter-none">
+      <div className="wrapper border-beige-secondary flex justify-between border-b px-9 py-4 lg:justify-center lg:py-10">
         <Link href="/" className="flex items-center lg:flex-col" onClick={() => setIsOpen(false)}>
-          <Image src={logoIcon} width={60} height={60} alt={'the logo "boorista" with a coffee mug and a pen'} />
+          <Image src={logoIcon} width={60} height={60} alt="the logo boorista with a coffee mug and a pen" />
           <p className="text-xl font-bold uppercase lg:text-2xl">Boorista</p>
         </Link>
         {/* menu toggle for responsive nav */}
@@ -50,7 +50,7 @@ const Navigation: FC = () => {
               src={hamburgerNavIcon}
               width={35}
               height={35}
-              alt={'hamburger icon for toggling the nav menu in responsive layout'}
+              alt="hamburger icon for toggling the nav menu in responsive layout"
               className="lg:hidden"
             />
           ) : (
@@ -58,7 +58,7 @@ const Navigation: FC = () => {
               src={closeNavIcon}
               width={30}
               height={30}
-              alt={'close icon for closing the nav menu in responsive layout'}
+              alt="close icon for closing the nav menu in responsive layout"
               className="lg:hidden"
             />
           )}
@@ -71,8 +71,8 @@ const Navigation: FC = () => {
               <li key={link.name}>
                 <Link
                   href={link.href}
-                  className={clsx('flex gap-2 py-3 pl-10 font-medium hover:bg-[var(--lightbeige-bg)] lg:pl-5', {
-                    'bg-[var(--lightbeige-bg)] font-semibold': pathname === link.href,
+                  className={clsx('hover:bg-lightbeige-bg flex gap-2 py-3 pl-10 font-medium lg:pl-5', {
+                    'bg-lightbeige-bg font-semibold': pathname === link.href,
                   })}
                   onClick={() => setIsOpen(!isOpen)}
                 >
@@ -88,12 +88,12 @@ const Navigation: FC = () => {
             );
           })}
         </ul>
-        <ul className="impressum-privacy-wrapper border-t border-[var(--beige-secondary)] py-4 lg:py-6">
+        <ul className="impressum-privacy-wrapper border-beige-secondary border-t py-4 lg:py-6">
           <li>
             <Link
               href="/impressum"
-              className={clsx('flex gap-2 py-3 pl-10 font-medium hover:bg-[var(--lightbeige-bg)] lg:pl-5', {
-                'bg-[var(--lightbeige-bg)] font-semibold': pathname === '/impressum',
+              className={clsx('hover:bg-lightbeige-bg flex gap-2 py-3 pl-10 font-medium lg:pl-5', {
+                'bg-lightbeige-bg font-semibold': pathname === '/impressum',
               })}
               onClick={() => setIsOpen(!isOpen)}
             >
@@ -101,7 +101,7 @@ const Navigation: FC = () => {
                 src={pathname === '/impressum' ? impressumIconFill : impressumIcon}
                 width={26}
                 height={26}
-                alt={'a navigation icon of Impressum'}
+                alt="a navigation icon of Impressum"
               />
               Impressum
             </Link>
@@ -109,8 +109,8 @@ const Navigation: FC = () => {
           <li>
             <Link
               href="/privacy"
-              className={clsx('flex gap-2 py-3 pl-10 font-medium hover:bg-[var(--lightbeige-bg)] lg:pl-5', {
-                'bg-[var(--lightbeige-bg)] font-semibold': pathname === '/privacy',
+              className={clsx('hover:bg-lightbeige-bg flex gap-2 py-3 pl-10 font-medium lg:pl-5', {
+                'bg-lightbeige-bg font-semibold': pathname === '/privacy',
               })}
               onClick={() => setIsOpen(!isOpen)}
             >
@@ -118,7 +118,7 @@ const Navigation: FC = () => {
                 src={pathname === '/privacy' ? privacyIconFill : privacyIcon}
                 width={26}
                 height={26}
-                alt={'a navigation icon of Datenschutz'}
+                alt="a navigation icon of Datenschutz"
               />
               Datenschutz
             </Link>

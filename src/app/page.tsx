@@ -5,9 +5,8 @@ import BrewsPage from './brews/page';
 const HomePage: FC = () => {
   return (
     <>
-      <Header additionalClasses="text-[1.375rem]">📔☕️ Welcome to Boorista - a coffee journal app ☕️📔</Header>
+      <p className="mb-8 text-2xl italic">📔☕️ Welcome to Boorista - a coffee tasting journal app ☕️📔</p>
       <BrewsPage />
-      <p>Brews Cards coming soon...</p>
     </>
   );
 };
