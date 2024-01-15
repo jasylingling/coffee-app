@@ -16,7 +16,7 @@ const config: Config = {
         'lightbeige-bg': 'var(--lightbeige-bg)',
         'lightgrey-bg': 'var(--lightgrey-bg)',
         'red-fav': 'var(--red-fav)',
-        'red-delete': 'var(--red-delete)',
+        'red-danger': 'var(--red-danger)',
         'red-hot': 'var(--red-hot)',
         'blue-cold': 'var(--blue-cold)',
       },
