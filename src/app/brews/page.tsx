@@ -15,7 +15,7 @@ const BrewsPage: FC = () => {
           Add new brew
         </Button>
       </Link>
-      <div className="brews-wrapper flex flex-wrap">
+      <div className="brews-wrapper mt-6 flex flex-wrap">
         <BrewCard date="08.12.2023" coffeeBeanName="coffee bean name" cupSize={2} grindSize={8} grindAmount={14}></BrewCard>
         <BrewCard date="07.11.2023" coffeeBeanName="coffee bean name" cupSize={2} grindSize={8} grindAmount={14}></BrewCard>
         <BrewCard date="06.10.2023" coffeeBeanName="coffee bean name" cupSize={2} grindSize={8} grindAmount={14}></BrewCard>

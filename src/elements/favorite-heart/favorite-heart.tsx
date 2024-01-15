@@ -7,24 +7,26 @@ import clsx from 'clsx';
 
 type FavoriteHeartProps = {
   outline?: boolean;
+  buttonText?: boolean;
 };
 
-const FavoriteHeart: FC<FavoriteHeartProps> = ({ outline }) => {
+const FavoriteHeart: FC<FavoriteHeartProps> = ({ outline, buttonText }) => {
   const [favorite, setFavorite] = useState(false);
 
   return (
     <>
       <button
         onClick={() => setFavorite(!favorite)}
-        className={clsx('text-red-fav', {
+        className={clsx('flex items-center font-medium tracking-wide', {
           'rounded-full bg-white bg-opacity-50 p-2': outline,
         })}
       >
         {!favorite ? (
-          <FaRegHeart size={24} className="hover:opacity-80" />
+          <FaRegHeart size={24} className={clsx('text-red-fav hover:opacity-80', { 'sm:mr-2': buttonText })} />
         ) : (
-          <FaHeart size={24} className="hover:opacity-80" />
+          <FaHeart size={24} className={clsx('text-red-fav hover:opacity-80', { 'sm:mr-2': buttonText })} />
         )}
+        {buttonText && <span className="mr-0 hidden sm:inline">{favorite ? 'Remove from favs' : 'Add to favs'}</span>}
       </button>
     </>
   );

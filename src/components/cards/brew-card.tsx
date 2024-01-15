@@ -17,7 +17,7 @@ type BrewCardProps = {
 
 const BrewCard: FC<BrewCardProps> = ({ date, coffeeBeanName, cupSize, grindSize, grindAmount, additionalFacts }) => {
   return (
-    <div className="cards-wrapper mb-8 rounded-lg shadow-lg sm:mr-8 md:w-2/5 2xl:w-1/4">
+    <div className="cards-wrapper mb-8 w-full rounded-lg shadow-lg min-[500px]:mr-8 md:w-2/5 2xl:w-1/4">
       <div className="image-wrapper relative flex h-48">
         <Image src={coffeeBeansImg} fill objectFit="cover" alt="coffee beans" className="rounded-t-lg" />
         <div className="favheart-wrapper m2 z-10 m-2 flex w-full items-end justify-end">

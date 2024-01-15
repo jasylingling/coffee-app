@@ -37,8 +37,8 @@ const Navigation: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="lg:border-beige-secondary fixed z-20 flex w-full flex-col bg-white drop-shadow-2xl lg:h-screen lg:w-64 lg:border-r lg:filter-none">
-      <div className="wrapper border-beige-secondary flex justify-between border-b px-9 py-4 lg:justify-center lg:py-10">
+    <nav className="fixed z-20 flex w-full flex-col bg-white drop-shadow-2xl lg:h-screen lg:w-64 lg:border-r lg:border-beige-secondary lg:filter-none">
+      <div className="wrapper flex justify-between border-b border-beige-secondary px-9 py-4 lg:justify-center lg:py-10">
         <Link href="/" className="flex items-center lg:flex-col" onClick={() => setIsOpen(false)}>
           <Image src={logoIcon} width={60} height={60} alt="the logo boorista with a coffee mug and a pen" />
           <p className="text-xl font-bold uppercase lg:text-2xl">Boorista</p>
@@ -71,7 +71,7 @@ const Navigation: FC = () => {
               <li key={link.name}>
                 <Link
                   href={link.href}
-                  className={clsx('hover:bg-lightbeige-bg flex gap-2 py-3 pl-10 font-medium lg:pl-5', {
+                  className={clsx('flex gap-2 py-3 pl-10 font-medium hover:bg-lightbeige-bg lg:pl-5', {
                     'bg-lightbeige-bg font-semibold': pathname === link.href,
                   })}
                   onClick={() => setIsOpen(!isOpen)}
@@ -88,11 +88,11 @@ const Navigation: FC = () => {
             );
           })}
         </ul>
-        <ul className="impressum-privacy-wrapper border-beige-secondary border-t py-4 lg:py-6">
+        <ul className="impressum-privacy-wrapper border-t border-beige-secondary py-4 lg:py-6">
           <li>
             <Link
               href="/impressum"
-              className={clsx('hover:bg-lightbeige-bg flex gap-2 py-3 pl-10 font-medium lg:pl-5', {
+              className={clsx('flex gap-2 py-3 pl-10 font-medium hover:bg-lightbeige-bg lg:pl-5', {
                 'bg-lightbeige-bg font-semibold': pathname === '/impressum',
               })}
               onClick={() => setIsOpen(!isOpen)}
@@ -109,7 +109,7 @@ const Navigation: FC = () => {
           <li>
             <Link
               href="/privacy"
-              className={clsx('hover:bg-lightbeige-bg flex gap-2 py-3 pl-10 font-medium lg:pl-5', {
+              className={clsx('flex gap-2 py-3 pl-10 font-medium hover:bg-lightbeige-bg lg:pl-5', {
                 'bg-lightbeige-bg font-semibold': pathname === '/privacy',
               })}
               onClick={() => setIsOpen(!isOpen)}
