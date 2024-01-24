@@ -1,11 +1,14 @@
 import BrewCard from '@/components/cards/brew-card';
 import Header from '@/components/header/header';
 import Button from '@/elements/button/button';
+import { fetchBrews } from '@/lib/data';
 import Link from 'next/link';
 import { FC } from 'react';
 import { FaPlus } from 'react-icons/fa6';
 
-const BrewsPage: FC = () => {
+const BrewsPage: FC = async () => {
+  const brews = await fetchBrews();
+
   return (
     <>
       <Header>Last Brews</Header>
@@ -16,42 +19,9 @@ const BrewsPage: FC = () => {
         </Button>
       </Link>
       <div className="brews-wrapper mt-6 flex flex-wrap">
-        <BrewCard date="08.12.2023" coffeeBeanName="coffee bean name" cupSize={2} grindSize={8} grindAmount={14}></BrewCard>
-        <BrewCard date="07.11.2023" coffeeBeanName="coffee bean name" cupSize={2} grindSize={8} grindAmount={14}></BrewCard>
-        <BrewCard date="06.10.2023" coffeeBeanName="coffee bean name" cupSize={2} grindSize={8} grindAmount={14}></BrewCard>
-        <BrewCard date="05.09.2023" coffeeBeanName="coffee bean name" cupSize={2} grindSize={8} grindAmount={14}></BrewCard>
-        <BrewCard
-          date="04.08.2023"
-          coffeeBeanName="coffee bean name"
-          cupSize={2}
-          grindSize={8}
-          grindAmount={14}
-          additionalFacts="sonstige Facts"
-        ></BrewCard>
-        <BrewCard
-          date="03.07.2023"
-          coffeeBeanName="coffee bean name"
-          cupSize={2}
-          grindSize={8}
-          grindAmount={14}
-          additionalFacts="sonstige Facts"
-        ></BrewCard>
-        <BrewCard
-          date="02.06.2023"
-          coffeeBeanName="coffee bean name"
-          cupSize={2}
-          grindSize={8}
-          grindAmount={14}
-          additionalFacts="sonstige Facts"
-        ></BrewCard>
-        <BrewCard
-          date="01.05.2023"
-          coffeeBeanName="coffee bean name"
-          cupSize={2}
-          grindSize={8}
-          grindAmount={14}
-          additionalFacts="sonstige Facts"
-        ></BrewCard>
+        {brews.reverse().map((brew) => (
+          <BrewCard key={brew.id} brew={brew} />
+        ))}
       </div>
     </>
   );

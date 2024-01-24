@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, HTMLInputTypeAttribute, useId } from 'react';
+import { ChangeEvent, FC, FocusEvent, HTMLInputTypeAttribute, useId } from 'react';
 
 type InputBoxProps = {
   requiredInput?: boolean;
@@ -9,7 +9,7 @@ type InputBoxProps = {
   inputMin?: number;
   inputStep?: number;
   inputValue: string;
-  onBlur?: () => void;
+  onBlur?: (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   inputError?: string;
 };
@@ -40,7 +40,7 @@ const InputBox: FC<InputBoxProps> = ({
       >
         {label}
         {requiredInput && (
-          <span className="text-red-500" title="Required field">
+          <span className="text-red-danger" title="Required field">
             *
           </span>
         )}
@@ -71,7 +71,7 @@ const InputBox: FC<InputBoxProps> = ({
           className={styleInput}
         />
       )}
-      <span className="error block text-xs text-red-500">{inputError}</span>
+      <span className="error block text-xs text-red-danger">{inputError}</span>
     </>
   );
 };

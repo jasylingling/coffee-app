@@ -4,9 +4,17 @@ import { FC, useState } from 'react';
 import { CiCoffeeBean } from 'react-icons/ci';
 import { BiSolidCoffeeBean } from 'react-icons/bi';
 
-const StarRating: FC = () => {
-  const [rating, setRating] = useState(0);
+type StarRatingProps = {
+  rating: number;
+};
+
+const StarRating: FC<StarRatingProps> = ({ rating }) => {
+  const [ratingCount, setRatingCount] = useState(0);
   const [hover, setHover] = useState(0);
+
+  const resetRatingHandler = () => {
+    setRatingCount(0);
+  };
 
   return (
     <>
@@ -19,11 +27,16 @@ const StarRating: FC = () => {
               type="radio"
               name="rating"
               value={currentRating}
-              onChange={() => setRating(currentRating)}
+              onChange={() => setRatingCount(currentRating)}
               className="hidden"
             />
-            <span className="cursor-pointer" onMouseEnter={() => setHover(currentRating)} onMouseLeave={() => setHover(0)}>
-              {currentRating <= (hover || rating) ? (
+            <span
+              className="cursor-pointer"
+              onMouseEnter={() => setHover(currentRating)}
+              onMouseLeave={() => setHover(0)}
+              onClick={resetRatingHandler}
+            >
+              {currentRating <= (hover || ratingCount || rating) ? (
                 <BiSolidCoffeeBean size={24} />
               ) : (
                 <CiCoffeeBean size={24} className="stroke-[0.5px]" />
