@@ -8,14 +8,15 @@ async function seedBrews(client) {
       CREATE TABLE IF NOT EXISTS brews (
         id SERIAL PRIMARY KEY,
         created_at TIMESTAMP NOT NULL,
-        favorite INTEGER NOT NULL,
+        favorite INTEGER,
         coffee_name VARCHAR(255) NOT NULL,
         website VARCHAR(255),
         rating INTEGER,
         image_url VARCHAR(255),
         brew_method VARCHAR(255) NOT NULL,
-        grind_amount FLOAT NOT NULL,
+        cup_size INTEGER NOT NULL,
         grind_size INTEGER NOT NULL,
+        grind_amount FLOAT NOT NULL,
         start_time INTEGER,
         extraction_time INTEGER,
         notes TEXT
@@ -29,7 +30,7 @@ async function seedBrews(client) {
       brews.map(
         (brew) => client.sql`
           INSERT INTO brews (created_at, favorite, coffee_name, website, rating, image_url, 
-            brew_method, grind_amount, grind_size, start_time, extraction_time, notes)
+            brew_method, cup_size, grind_size, grind_amount, start_time, extraction_time, notes)
           VALUES (
             ${brew.created_at},
             ${brew.favorite},
@@ -38,8 +39,9 @@ async function seedBrews(client) {
             ${brew.rating},
             ${brew.image_url},
             ${brew.brew_method},
-            ${brew.grind_amount},
+            ${brew.cup_size},
             ${brew.grind_size},
+            ${brew.grind_amount},
             ${brew.start_time},
             ${brew.extraction_time},
             ${brew.notes}

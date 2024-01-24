@@ -22,14 +22,12 @@ const RadioGroup: FC<RadioGroupProps> = ({
   onChange,
   inputError,
 }) => {
-  const uniqueId = useId();
-
   return (
     <>
       <p className="mt-4 block text-sm font-medium first:mt-0">
         {label}
         {requiredInput && (
-          <span className="text-red-500" title="Required field">
+          <span className="text-red-danger" title="Required field">
             *
           </span>
         )}
@@ -49,7 +47,7 @@ const RadioGroup: FC<RadioGroupProps> = ({
           </label>
         </div>
       ))}
-      <span className="error mt-[0.125rem] block text-xs text-red-500">{inputError}</span>
+      <span className="error mt-[0.125rem] block text-xs text-red-danger">{inputError}</span>
     </>
   );
 };
