@@ -1,4 +1,5 @@
 import { validateUrl } from '@/utils/form/validation';
+import { Brews } from '@/lib/definition';
 
 type InputValues = {
   coffee_name: string;
@@ -55,6 +56,31 @@ export const initialState: FormState = {
     grind_size: undefined,
   },
   submitStatus: '',
+};
+
+export const editInitialState = (brew: Brews): FormState => {
+  return {
+    values: {
+      coffee_name: brew.coffee_name,
+      website: brew.website,
+      brew_method: brew.brew_method,
+      cup_size: brew.cup_size.toString(),
+      grind_amount: brew.grind_amount.toString(),
+      grind_size: brew.grind_size.toString(),
+      start_time: brew.start_time.toString(),
+      extraction_time: brew.extraction_time.toString(),
+      notes: brew.notes,
+    },
+    errors: {
+      coffee_name: undefined,
+      website: false,
+      brew_method: undefined,
+      cup_size: undefined,
+      grind_amount: undefined,
+      grind_size: undefined,
+    },
+    submitStatus: '',
+  };
 };
 
 export default function reducer(state: FormState, action: FormAction): FormState {

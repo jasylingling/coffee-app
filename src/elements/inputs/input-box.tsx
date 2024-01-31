@@ -8,7 +8,7 @@ type InputBoxProps = {
   inputName: string;
   inputMin?: number;
   inputStep?: number;
-  inputValue: string;
+  inputValue: string | number;
   onBlur?: (e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   inputError?: string;

@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useId } from 'react';
+import { ChangeEvent, FC } from 'react';
 
 type RadioGroupProps = {
   requiredInput?: boolean;
