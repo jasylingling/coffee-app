@@ -19,7 +19,7 @@ const BrewsPage: FC = async () => {
         </Button>
       </Link>
       <div className="brews-wrapper mt-6 flex flex-wrap">
-        {brews.reverse().map((brew) => (
+        {brews.map((brew) => (
           <BrewCard key={brew.id} brew={brew} />
         ))}
       </div>

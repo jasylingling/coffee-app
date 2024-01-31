@@ -1,4 +1,3 @@
-import Header from '@/components/header/header';
 import { FC } from 'react';
 import BrewsPage from './brews/page';
 

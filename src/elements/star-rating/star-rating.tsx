@@ -6,15 +6,12 @@ import { BiSolidCoffeeBean } from 'react-icons/bi';
 
 type StarRatingProps = {
   rating: number;
+  onRatingChange?: (rating: number) => void;
 };
 
-const StarRating: FC<StarRatingProps> = ({ rating }) => {
-  const [ratingCount, setRatingCount] = useState(0);
+const StarRating: FC<StarRatingProps> = ({ rating, onRatingChange }) => {
+  const [ratingCount, setRatingCount] = useState(rating);
   const [hover, setHover] = useState(0);
-
-  const resetRatingHandler = () => {
-    setRatingCount(0);
-  };
 
   return (
     <>
@@ -24,19 +21,19 @@ const StarRating: FC<StarRatingProps> = ({ rating }) => {
         return (
           <label key={index}>
             <input
+              defaultChecked={currentRating === ratingCount}
               type="radio"
               name="rating"
               value={currentRating}
-              onChange={() => setRatingCount(currentRating)}
+              onClick={() => {
+                const newRating = currentRating === ratingCount ? 0 : currentRating;
+                setRatingCount(newRating);
+                onRatingChange && onRatingChange(newRating);
+              }}
               className="hidden"
             />
-            <span
-              className="cursor-pointer"
-              onMouseEnter={() => setHover(currentRating)}
-              onMouseLeave={() => setHover(0)}
-              onClick={resetRatingHandler}
-            >
-              {currentRating <= (hover || ratingCount || rating) ? (
+            <span className="cursor-pointer" onMouseEnter={() => setHover(currentRating)} onMouseLeave={() => setHover(0)}>
+              {currentRating <= (hover || ratingCount) ? (
                 <BiSolidCoffeeBean size={24} />
               ) : (
                 <CiCoffeeBean size={24} className="stroke-[0.5px]" />

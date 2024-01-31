@@ -7,7 +7,7 @@ async function seedBrews(client) {
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS brews (
         id SERIAL PRIMARY KEY,
-        created_at TIMESTAMP NOT NULL,
+        edited_at TIMESTAMP,
         favorite INTEGER,
         coffee_name VARCHAR(255) NOT NULL,
         website VARCHAR(255),
@@ -25,14 +25,37 @@ async function seedBrews(client) {
 
     console.log('Created "brews" table');
 
+    // Add trigger function to update edited_at
+    const createFunction = await client.sql`
+     CREATE OR REPLACE FUNCTION update_edited_at()
+     RETURNS TRIGGER AS $$
+     BEGIN
+       NEW.edited_at = CURRENT_TIMESTAMP;
+       RETURN NEW;
+     END;
+     $$ LANGUAGE plpgsql;
+   `;
+
+    console.log('Created trigger function "update_edited_at"');
+
+    // Add trigger to call the function before each update
+    const createTrigger = await client.sql`
+     CREATE TRIGGER update_brews_edited_at
+     BEFORE UPDATE ON brews
+     FOR EACH ROW
+     EXECUTE FUNCTION update_edited_at();
+   `;
+
+    console.log('Created trigger "update_brews_edited_at"');
+
     // Insert data into the "brews" table
     const insertedBrews = await Promise.all(
       brews.map(
         (brew) => client.sql`
-          INSERT INTO brews (created_at, favorite, coffee_name, website, rating, image_url, 
+          INSERT INTO brews (edited_at, favorite, coffee_name, website, rating, image_url, 
             brew_method, cup_size, grind_size, grind_amount, start_time, extraction_time, notes)
           VALUES (
-            ${brew.created_at},
+            ${brew.edited_at},
             ${brew.favorite},
             ${brew.coffee_name},
             ${brew.website},
@@ -55,6 +78,8 @@ async function seedBrews(client) {
 
     return {
       createTable,
+      createFunction,
+      createTrigger,
       brews: insertedBrews,
     };
   } catch (error) {
