@@ -31,15 +31,6 @@ const CreateForm: FC = () => {
           dispatch({ type: 'reset_form' });
           dispatch({ type: 'submit', status: 'success' });
           toast.success('Dein neuer Brew wurde gespeichert, yay! :)');
-          toast(
-            <>
-              <BiSolidCoffeeBean size={19} />
-              <Link href="/brews" className="underline">
-                Zurück zur Brews-Übersicht
-              </Link>
-            </>,
-            { duration: Infinity },
-          );
         })
         .catch((error) => {
           console.error('Error:', error);

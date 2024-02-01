@@ -48,7 +48,8 @@ export async function createBrew(formData: FormData) {
     extraction_time: formData.get('extraction_time'),
     notes: formData.get('notes'),
   });
-  const edited_at = new Date().toISOString().split('T')[0];
+  const timeZone = 'Europe/Zurich';
+  const edited_at = new Date().toLocaleString('en-US', { timeZone });
 
   await sql`
     INSERT INTO brews (coffee_name, website, rating, brew_method, cup_size, grind_size, grind_amount, start_time, extraction_time, notes, edited_at)
@@ -56,6 +57,7 @@ export async function createBrew(formData: FormData) {
   `;
 
   revalidatePath('/brews');
+  redirect('/brews');
 }
 
 export async function updateBrew(id: number, formData: FormData) {
@@ -102,4 +104,10 @@ export async function updateRatingBrew(id: number, rating: number) {
   `;
 
   revalidatePath('/brews');
+}
+
+export async function deleteBrew(id: number) {
+  await sql`DELETE FROM brews WHERE id = ${id}`;
+  revalidatePath('/brews');
+  redirect('/brews');
 }
