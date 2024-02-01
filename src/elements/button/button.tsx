@@ -1,10 +1,10 @@
-import { ButtonHTMLAttributes, FC, ReactNode } from 'react';
+import { ButtonHTMLAttributes, FC, MouseEventHandler, ReactNode } from 'react';
 import clsx from 'clsx';
 
 type ButtonProps = {
   children: ReactNode;
-  onClick?: () => void;
-  variant: 'primary' | 'secondary' | 'tertiary';
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  variant: 'primary' | 'secondary' | 'tertiary' | 'danger';
   minWidth?: boolean;
   disabled?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
@@ -19,6 +19,7 @@ const Button: FC<ButtonProps> = ({ children, variant, onClick, disabled, minWidt
           'bg-brown-primary text-lightbeige-accent': variant === 'primary',
           'border-2 border-brown-primary text-brown-primary': variant === 'secondary',
           'text-red-danger underline decoration-2 underline-offset-4': variant === 'tertiary',
+          'bg-red-danger text-lightgrey-bg': variant === 'danger',
           'cursor-progress opacity-80': disabled,
           'min-[500px]:!w-24': minWidth,
         },

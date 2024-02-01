@@ -30,7 +30,7 @@ async function seedBrews(client) {
      CREATE OR REPLACE FUNCTION update_edited_at()
      RETURNS TRIGGER AS $$
      BEGIN
-       NEW.edited_at = CURRENT_TIMESTAMP;
+       NEW.edited_at = CURRENT_TIMESTAMP AT TIME ZONE 'Europe/Zurich';
        RETURN NEW;
      END;
      $$ LANGUAGE plpgsql;

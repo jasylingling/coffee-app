@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, FormEvent, useReducer, useRef } from 'react';
+import { FC, FormEvent, useReducer, useRef, useState } from 'react';
 import InputBox from '@/elements/inputs/input-box';
 import Button from '@/elements/button/button';
 import FavoriteHeart from '@/elements/favorite-heart/favorite-heart';
@@ -8,12 +8,13 @@ import StarRating from '@/elements/star-rating/star-rating';
 import Fieldset from '@/elements/fieldset/fieldset';
 import RadioGroup from '@/elements/inputs/radio-group';
 import Link from 'next/link';
-import { updateBrew } from '@/lib/actions';
+import { deleteBrew, updateBrew } from '@/lib/actions';
 import { Toaster, toast } from 'sonner';
 import reducer, { editInitialState } from './reducer';
 import { Brews } from '@/lib/definition';
 import dayjs from 'dayjs';
 import { MdDeleteOutline } from 'react-icons/md';
+import Modal from '../modal/modal';
 
 type EditFormProps = {
   brew: Brews;
@@ -21,10 +22,10 @@ type EditFormProps = {
 
 const EditForm: FC<EditFormProps> = ({ brew }) => {
   const updateBrewWithId = updateBrew.bind(null, brew.id);
-
   const [state, dispatch] = useReducer(reducer, editInitialState(brew));
-
   const form = useRef<HTMLFormElement>(null);
+  const deleteBrewWithId = deleteBrew.bind(null, brew.id);
+  const [isOpen, setIsOpen] = useState(false);
 
   function submitHandler(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -57,7 +58,8 @@ const EditForm: FC<EditFormProps> = ({ brew }) => {
     >
       <div className="wrapper flex justify-between">
         <p className="text-xs/relaxed font-medium">
-          <span className="mr-1 text-sm">🗓️</span> Zuletzt bearbeitet am {dayjs(brew.edited_at).format('DD.MM.YYYY')}
+          <span className="mr-1 text-sm">🗓️</span> Zuletzt bearbeitet am{' '}
+          {dayjs(brew.edited_at).format('DD.MM.YYYY | HH:mm:ss')}
         </p>
         <div className="fav-wrapper self-end rounded-lg border-2 border-brown-primary px-3 py-[0.625rem] text-right text-sm sm:px-6">
           <FavoriteHeart buttonText />
@@ -180,9 +182,24 @@ const EditForm: FC<EditFormProps> = ({ brew }) => {
           </Link>
         </div>
         <div className="wrapper">
-          <Button variant="tertiary">
+          <Button
+            variant="tertiary"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsOpen(true);
+            }}
+          >
             <MdDeleteOutline size={19} /> Delete
           </Button>
+          <Modal
+            title="Brew löschen"
+            description={`Möchtest du den Brew "${brew.coffee_name}" wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden!`}
+            isOpen={isOpen}
+            cancelActionHandler={() => setIsOpen(false)}
+            confirmActionHandler={() => {
+              deleteBrewWithId();
+            }}
+          />
         </div>
         <Toaster position="bottom-center" richColors expand={true} closeButton />
       </div>
