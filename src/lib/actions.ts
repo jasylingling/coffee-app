@@ -50,10 +50,11 @@ export async function createBrew(formData: FormData) {
   });
   const timeZone = 'Europe/Zurich';
   const edited_at = new Date().toLocaleString('en-US', { timeZone });
+  const image_url = `https://source.unsplash.com/400x320/?coffee-beans=${Math.random()}`;
 
   await sql`
-    INSERT INTO brews (coffee_name, website, rating, brew_method, cup_size, grind_size, grind_amount, start_time, extraction_time, notes, edited_at)
-    VALUES (${coffee_name}, ${website}, ${rating}, ${brew_method}, ${cup_size}, ${grind_size}, ${grind_amount}, ${start_time}, ${extraction_time}, ${notes}, ${edited_at})
+    INSERT INTO brews (coffee_name, website, rating, brew_method, cup_size, grind_size, grind_amount, start_time, extraction_time, notes, edited_at, image_url)
+    VALUES (${coffee_name}, ${website}, ${rating}, ${brew_method}, ${cup_size}, ${grind_size}, ${grind_amount}, ${start_time}, ${extraction_time}, ${notes}, ${edited_at}, ${image_url})
   `;
 
   revalidatePath('/brews');
@@ -107,6 +108,7 @@ export async function updateRatingBrew(id: number, rating: number) {
 }
 
 export async function deleteBrew(id: number) {
+  noStore();
   await sql`DELETE FROM brews WHERE id = ${id}`;
   revalidatePath('/brews');
   redirect('/brews');

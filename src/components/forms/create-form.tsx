@@ -10,7 +10,6 @@ import RadioGroup from '@/elements/inputs/radio-group';
 import Link from 'next/link';
 import { createBrew } from '@/lib/actions';
 import { Toaster, toast } from 'sonner';
-import { BiSolidCoffeeBean } from 'react-icons/bi';
 import reducer, { initialState } from './reducer';
 
 const CreateForm: FC = () => {
