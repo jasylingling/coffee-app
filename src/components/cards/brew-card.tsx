@@ -2,7 +2,6 @@
 
 import Image from 'next/legacy/image';
 import { FC, useState } from 'react';
-import coffeeBeansImg from '../../../public/img/coffee-beans.jpg';
 import deleteBtn from '../../../public/svg/delete.svg';
 import editBtn from '../../../public/svg/edit.svg';
 import StarRating from '../../elements/star-rating/star-rating';
@@ -24,8 +23,8 @@ const BrewCard: FC<BrewCardProps> = ({ brew }) => {
   return (
     <div className="cards-wrapper mb-8 w-full rounded-lg shadow-lg min-[500px]:mr-8 md:w-2/5 2xl:w-1/4">
       <div className="image-wrapper relative flex h-48">
-        <Image src={coffeeBeansImg} layout="fill" objectFit="cover" alt="coffee beans" className="rounded-t-lg" />
-        <div className="favheart-wrapper m2 z-10 m-2 flex w-full items-end justify-end">
+        <Image src={brew.image_url} layout="fill" objectFit="cover" alt="coffee beans" className="rounded-t-lg" />
+        <div className="favheart-wrapper z-10 m-3 flex w-full items-end justify-end">
           <FavoriteHeart outline />
         </div>
       </div>

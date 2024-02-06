@@ -6,7 +6,7 @@ const brews = [
     coffee_name: 'ViCAFE Hausmischung',
     website: 'https://vicafe.ch',
     rating: 2, // 1-5
-    image_url: 'public/img/coffee-beans.jpg',
+    image_url: `https://source.unsplash.com/400x320/?coffee-beans=${Math.random()}`,
     brew_method: 'Sage Barista Pro',
     cup_size: 1, // 1 or 2 cup
     grind_size: 6,
@@ -22,7 +22,7 @@ const brews = [
     coffee_name: 'Costa Blonde',
     website: 'https://costa.com',
     rating: 5, // 1-5
-    image_url: 'public/img/coffee-beans.jpg',
+    image_url: `https://source.unsplash.com/400x320/?coffee-beans=${Math.random()}`,
     brew_method: 'Sage Barista Pro',
     cup_size: 2, // 1 or 2 cup
     grind_size: 8,
@@ -38,7 +38,7 @@ const brews = [
     coffee_name: 'ViCAFE Nogales',
     website: 'https://vicafe.ch',
     rating: 4, // 1-5
-    image_url: 'public/img/coffee-beans.jpg',
+    image_url: `https://source.unsplash.com/400x320/?coffee-beans=${Math.random()}`,
     brew_method: 'Sage Barista Pro',
     cup_size: 2, // 1 or 2 cup
     grind_size: 10,

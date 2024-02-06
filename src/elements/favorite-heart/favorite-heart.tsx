@@ -18,7 +18,7 @@ const FavoriteHeart: FC<FavoriteHeartProps> = ({ outline, buttonText }) => {
       <button
         onClick={() => setFavorite(!favorite)}
         className={clsx('flex items-center font-medium tracking-wide', {
-          'rounded-full bg-white bg-opacity-50 p-2': outline,
+          'rounded-full bg-white bg-opacity-75 p-2': outline,
         })}
       >
         {!favorite ? (
