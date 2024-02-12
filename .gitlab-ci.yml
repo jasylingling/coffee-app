@@ -41,3 +41,10 @@ lint-test-job:   # This job also runs in the test stage.
   script:
     - npm ci
     - npm run lint
+
+e2e-test-job:
+  stage: test
+  extends: .base
+  script:
+    - npm ci
+    - npm run test
