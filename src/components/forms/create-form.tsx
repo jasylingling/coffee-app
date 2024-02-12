@@ -48,7 +48,7 @@ const CreateForm: FC = () => {
       onSubmit={submitHandler}
     >
       <div className="fav-wrapper self-end rounded-lg border-2 border-brown-primary px-3 py-[0.625rem] text-right text-sm sm:px-6">
-        <FavoriteHeart buttonText />
+        <FavoriteHeart favText favorite={0} />
       </div>
       <Fieldset legend="Produkt" sectionName="product">
         <InputBox

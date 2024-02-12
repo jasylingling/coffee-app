@@ -19,7 +19,7 @@ const StarRating: FC<StarRatingProps> = ({ rating, onRatingChange }) => {
         const currentRating = index + 1;
 
         return (
-          <label key={index}>
+          <label key={index} aria-label={`rating ${currentRating}`}>
             <input
               defaultChecked={currentRating === ratingCount}
               type="radio"

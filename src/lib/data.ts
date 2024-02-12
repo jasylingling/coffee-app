@@ -27,6 +27,20 @@ export async function fetchBrewById(id: number) {
   }
 }
 
+export async function fetchBrewsByFavs(): Promise<Brews[]> {
+  noStore();
+  try {
+    const data = await sql<Brews>`
+      SELECT * FROM brews
+      WHERE favorite = 1
+      ORDER BY edited_at DESC`;
+    return data.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch favorite brews.');
+  }
+}
+
 export async function fetchBrewsThisWeek() {
   noStore();
   try {
