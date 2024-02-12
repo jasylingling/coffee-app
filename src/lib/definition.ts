@@ -1,7 +1,7 @@
 export type Brews = {
   id: number; // will be created on the database
   edited_at: string;
-  // favorite: number; -> will be used later in issue #28 (Favoritenliste)
+  favorite: 0 | 1; // 0 = not a favorite, 1 = favorite
   coffee_name: string;
   website: string;
   rating: number;

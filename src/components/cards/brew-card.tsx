@@ -9,7 +9,7 @@ import FavoriteHeart from '@/elements/favorite-heart/favorite-heart';
 import { Brews } from '@/lib/definition';
 import dayjs from 'dayjs';
 import Link from 'next/link';
-import { deleteBrew, updateRatingBrew } from '@/lib/actions';
+import { deleteBrew, updateFavBrew, updateRatingBrew } from '@/lib/actions';
 import Modal from '../modal/modal';
 
 type BrewCardProps = {
@@ -25,7 +25,11 @@ const BrewCard: FC<BrewCardProps> = ({ brew }) => {
       <div className="image-wrapper relative flex h-48">
         <Image src={brew.image_url} layout="fill" objectFit="cover" alt="coffee beans" className="rounded-t-lg" />
         <div className="favheart-wrapper z-10 m-3 flex w-full items-end justify-end">
-          <FavoriteHeart outline />
+          <FavoriteHeart
+            favorite={brew.favorite}
+            outline
+            onFavoriteChange={(newFavorite) => updateFavBrew(brew.id, newFavorite)}
+          />
         </div>
       </div>
       <div className="p-6">
