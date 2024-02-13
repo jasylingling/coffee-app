@@ -19,9 +19,9 @@ const CardItem: FC<CardItemProps> = ({ number, title, description, average, thro
       <p className="text-sm">
         <span className="mb-1 block text-base font-bold">{title}</span>
         {description}
-        {(throwback || lowestRating) && (
+        {(throwback || lowestRating != null) && (
           <span className="mt-6 block text-xs font-medium">
-            {throwback ? `🕥 ${throwback}` : `😕 Schlechtestest Rating: ${lowestRating}`}
+            {throwback ? `🕥 ${throwback}` : `😕 Tiefstes Rating: ${lowestRating}`}
           </span>
         )}
         {highestRating && <span className="mt-1 block text-xs font-medium">🤩 Bestes Rating: {highestRating}</span>}
