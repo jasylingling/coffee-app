@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, FormEvent, useReducer, useRef } from 'react';
+import { FC, FormEvent, useReducer, useRef, useState } from 'react';
 import InputBox from '@/elements/inputs/input-box';
 import Button from '@/elements/button/button';
 import FavoriteHeart from '@/elements/favorite-heart/favorite-heart';
@@ -8,28 +8,43 @@ import StarRating from '@/elements/star-rating/star-rating';
 import Fieldset from '@/elements/fieldset/fieldset';
 import RadioGroup from '@/elements/inputs/radio-group';
 import Link from 'next/link';
-import { createBrew } from '@/lib/actions';
+import { createBrew, deleteBrew, updateBrew } from '@/lib/actions';
 import { Toaster, toast } from 'sonner';
-import reducer, { initialState } from './reducer';
+import reducer, { initialState, editInitialState } from './reducer';
+import { Brews } from '@/lib/definition';
+import dayjs from 'dayjs';
+import { MdDeleteOutline } from 'react-icons/md';
+import Modal from '../modal/modal';
 
-const CreateForm: FC = () => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+type FormProps = {
+  brew?: Brews;
+};
 
+const Form: FC<FormProps> = ({ brew }) => {
+  const isEdit = !!brew;
+  const [state, dispatch] = useReducer(reducer, isEdit ? editInitialState(brew) : initialState);
   const form = useRef<HTMLFormElement>(null);
+  const deleteBrewWithId = isEdit ? deleteBrew.bind(null, brew.id) : () => {};
+  const [isOpen, setIsOpen] = useState(false);
+  const action = isEdit ? updateBrew.bind(null, brew.id) : createBrew;
+  const successMessage = isEdit
+    ? 'Deine Änderungen wurden übernommen, yay! :)'
+    : 'Dein neuer Brew wurde gespeichert, yay! :)';
 
-  function submitHandler(e: FormEvent<HTMLFormElement>) {
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch({ type: 'submit', status: 'loading' });
 
-    // save new brew entry only if there are no errors
     if (Object.values(state.errors).some((error) => error === true || error === undefined)) {
       dispatch({ type: 'submit', status: 'error' });
     } else {
-      createBrew(new FormData(form.current!))
+      action(new FormData(form.current!))
         .then(() => {
-          dispatch({ type: 'reset_form' });
+          if (!isEdit) {
+            dispatch({ type: 'reset_form' });
+          }
           dispatch({ type: 'submit', status: 'success' });
-          toast.success('Dein neuer Brew wurde gespeichert, yay! :)');
+          toast.success(successMessage);
         })
         .catch((error) => {
           console.error('Error:', error);
@@ -39,7 +54,7 @@ const CreateForm: FC = () => {
           );
         });
     }
-  }
+  };
 
   return (
     <form
@@ -47,9 +62,21 @@ const CreateForm: FC = () => {
       className="flex w-full flex-col rounded-lg border border-lightbeige-accent p-5 shadow-lg sm:w-5/6 sm:p-8 md:w-5/6 xl:w-7/12"
       onSubmit={submitHandler}
     >
-      <div className="fav-wrapper self-end rounded-lg border-2 border-brown-primary px-3 py-[0.625rem] text-right text-sm sm:px-6">
-        <FavoriteHeart favText favorite={0} />
-      </div>
+      {isEdit ? (
+        <div className="wrapper flex justify-between">
+          <p className="text-xs/relaxed font-medium">
+            <span className="mr-1 text-sm">🗓️</span> Zuletzt bearbeitet am{' '}
+            {dayjs(brew.edited_at).format('DD.MM.YYYY | HH:mm:ss')}
+          </p>
+          <div className="fav-wrapper self-end rounded-lg border-2 border-brown-primary px-3 py-[0.625rem] text-right text-sm sm:px-6">
+            <FavoriteHeart favText favorite={brew.favorite} />
+          </div>
+        </div>
+      ) : (
+        <div className="fav-wrapper self-end rounded-lg border-2 border-brown-primary px-3 py-[0.625rem] text-right text-sm sm:px-6">
+          <FavoriteHeart favText favorite={0} />
+        </div>
+      )}
       <Fieldset legend="Produkt" sectionName="product">
         <InputBox
           requiredInput
@@ -75,7 +102,7 @@ const CreateForm: FC = () => {
         <div className="rating-input mt-4">
           <p className="mb-1 text-sm font-medium">Rating (optional)</p>
           <div className="rating-wrapper flex">
-            <StarRating rating={0} />
+            {isEdit ? <StarRating rating={brew.rating} /> : <StarRating rating={0} />}
           </div>
         </div>
       </Fieldset>
@@ -99,7 +126,7 @@ const CreateForm: FC = () => {
             { value: '1', label: '1 Cup' },
             { value: '2', label: '2 Cup' },
           ]}
-          selectedValue={state.values.cup_size}
+          selectedValue={state.values.cup_size.toString()}
           onChange={(e) => dispatch({ type: 'update', field: 'cup_size', value: e.target.value })}
           inputError={state.errors.cup_size ? 'Please choose a cup size' : ''}
         />
@@ -157,17 +184,51 @@ const CreateForm: FC = () => {
         inputValue={state.values.notes}
         onChange={(e) => dispatch({ type: 'update', field: 'notes', value: e.target.value })}
       />
-      <div className="button-wrapper min-[500px]:flex">
-        <Button variant="primary" type="submit" disabled={state.submitStatus === 'loading'} minWidth>
-          {state.submitStatus === 'loading' ? 'Saving...' : 'Save'}
-        </Button>
-        <Link href="/brews">
-          <Button variant="secondary">Cancel</Button>
-        </Link>
-        <Toaster position="bottom-center" richColors expand={true} closeButton />
-      </div>
+      {isEdit ? (
+        <div className="button-wrapper justify-between min-[500px]:flex">
+          <div className="wrapper min-[500px]:flex ">
+            <Button variant="primary" type="submit" disabled={state.submitStatus === 'loading'} minWidth>
+              {state.submitStatus === 'loading' ? 'Saving...' : 'Save'}
+            </Button>
+            <Link href="/brews">
+              <Button variant="secondary">Cancel</Button>
+            </Link>
+          </div>
+          <div className="wrapper">
+            <Button
+              variant="tertiary"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsOpen(true);
+              }}
+            >
+              <MdDeleteOutline size={19} /> Delete
+            </Button>
+            <Modal
+              title="Brew löschen"
+              description={`Möchtest du den Brew "${brew.coffee_name}" wirklich löschen? Dieser Vorgang kann nicht rückgängig gemacht werden!`}
+              isOpen={isOpen}
+              cancelActionHandler={() => setIsOpen(false)}
+              confirmActionHandler={() => {
+                deleteBrewWithId();
+              }}
+            />
+          </div>
+          <Toaster position="bottom-center" richColors expand={true} closeButton />
+        </div>
+      ) : (
+        <div className="button-wrapper min-[500px]:flex">
+          <Button variant="primary" type="submit" disabled={state.submitStatus === 'loading'} minWidth>
+            {state.submitStatus === 'loading' ? 'Saving...' : 'Save'}
+          </Button>
+          <Link href="/brews">
+            <Button variant="secondary">Cancel</Button>
+          </Link>
+          <Toaster position="bottom-center" richColors expand={true} closeButton />
+        </div>
+      )}
     </form>
   );
 };
 
-export default CreateForm;
+export default Form;
