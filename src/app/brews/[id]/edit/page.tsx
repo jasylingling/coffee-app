@@ -1,5 +1,5 @@
+import Form from '@/components/forms/form';
 import Header from '@/components/header/header';
-import EditForm from '@/components/forms/edit-form';
 import { fetchBrewById } from '@/lib/data';
 import { FC } from 'react';
 
@@ -14,7 +14,7 @@ const BrewPage: FC<BrewPageProps> = async ({ params }) => {
   return (
     <>
       <Header>Edit Brew</Header>
-      <EditForm brew={brew} />
+      <Form brew={brew} />
     </>
   );
 };

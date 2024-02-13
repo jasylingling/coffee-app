@@ -32,12 +32,12 @@ const LexikonPage: FC = () => {
       <Header>Lexikon</Header>
       <div className="brews-wrapper mt-6 flex flex-wrap">
         {[...hotBeverages]
-          .sort((a, b) => a.title.localeCompare(b.title)) // Sortierung
+          .sort((a, b) => a.title.localeCompare(b.title)) // sort in alphabetical order
           .map((recipe, id) => (
             <InfoCard key={id} info={recipe} type="hot" badgeText="hot" contentToShow="description" />
           ))}
         {[...coldBeverages]
-          .sort((a, b) => a.title.localeCompare(b.title)) // Sortierung
+          .sort((a, b) => a.title.localeCompare(b.title)) // sort in alphabetical order
           .map((recipe, id) => (
             <InfoCard key={id} info={recipe} type="cold" badgeText="cold" contentToShow="description" />
           ))}

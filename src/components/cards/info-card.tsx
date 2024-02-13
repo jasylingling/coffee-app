@@ -36,7 +36,7 @@ const InfoCard: FC<InfoCardProps> = ({ info, type, badgeText, contentToShow }) =
         <h2 className="mb-2 mt-4 text-xl font-semibold capitalize">{info.title}</h2>
         {contentToShow === 'description' && <p className="text-sm">{info.description}</p>}
         {contentToShow === 'ingredients' && (
-          <ul role="list" className="list-disc pl-5 text-sm/relaxed font-medium marker:text-beige-secondary">
+          <ul role="list" className="list-disc pl-5 text-sm/relaxed marker:text-beige-secondary">
             {info.ingredients.map((ingredient, index) => (
               <li key={index}>{ingredient}</li>
             ))}
