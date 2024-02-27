@@ -1,13 +1,21 @@
-import { sql } from '@vercel/postgres';
+import { Client } from 'pg';
 import { Brews } from './definition';
 import { unstable_noStore as noStore } from 'next/cache';
+
+const sql = async (query: string, values?: (number | string)[]) => {
+  const client = new Client({
+    connectionString: process.env.POSTGRES_URL_NON_POOLING,
+  });
+  await client.connect();
+  const result = await client.query(query, values);
+  await client.end();
+  return result;
+};
 
 export async function fetchBrews(): Promise<Brews[]> {
   noStore();
   try {
-    const data = await sql<Brews>`
-      SELECT * FROM brews
-      ORDER BY edited_at DESC`;
+    const data = await sql('SELECT * FROM brews ORDER BY edited_at DESC');
     return data.rows;
   } catch (error) {
     console.error('Database Error:', error);
@@ -18,8 +26,7 @@ export async function fetchBrews(): Promise<Brews[]> {
 export async function fetchBrewById(id: number) {
   noStore();
   try {
-    const data = await sql<Brews>`
-      SELECT * FROM brews WHERE id = ${id}`;
+    const data = await sql('SELECT * FROM brews WHERE id = $1', [id]);
     return data.rows[0];
   } catch (error) {
     console.error('Database Error:', error);
@@ -30,10 +37,7 @@ export async function fetchBrewById(id: number) {
 export async function fetchBrewsByFavs(): Promise<Brews[]> {
   noStore();
   try {
-    const data = await sql<Brews>`
-      SELECT * FROM brews
-      WHERE favorite = 1
-      ORDER BY edited_at DESC`;
+    const data = await sql('SELECT * FROM brews WHERE favorite = 1 ORDER BY edited_at DESC');
     return data.rows;
   } catch (error) {
     console.error('Database Error:', error);
@@ -44,8 +48,7 @@ export async function fetchBrewsByFavs(): Promise<Brews[]> {
 export async function fetchBrewsThisWeek() {
   noStore();
   try {
-    const data = await sql`
-      SELECT COUNT(*) AS count FROM brews WHERE edited_at >= date_trunc('week', CURRENT_DATE)`;
+    const data = await sql(`SELECT COUNT(*) AS count FROM brews WHERE edited_at >= date_trunc('week', CURRENT_DATE)`);
     return data.rows[0].count;
   } catch (error) {
     console.error('Database Error:', error);
@@ -56,11 +59,9 @@ export async function fetchBrewsThisWeek() {
 export async function fetchBrewsLastWeek() {
   noStore();
   try {
-    const data = await sql`
-      SELECT COUNT(*) AS count
-      FROM brews
-      WHERE edited_at < date_trunc('week', CURRENT_DATE)
-      AND edited_at >= date_trunc('week', CURRENT_DATE) - interval '1 week'`;
+    const data = await sql(
+      `SELECT COUNT(*) AS count FROM brews WHERE edited_at < date_trunc('week', CURRENT_DATE) AND edited_at >= date_trunc('week', CURRENT_DATE) - interval '1 week'`,
+    );
     return data.rows[0].count;
   } catch (error) {
     console.error('Database Error:', error);
@@ -71,8 +72,7 @@ export async function fetchBrewsLastWeek() {
 export async function fetchTotalBeans() {
   noStore();
   try {
-    const data = await sql`
-      SELECT COUNT(*) AS count FROM brews`;
+    const data = await sql('SELECT COUNT(*) AS count FROM brews');
     return data.rows[0].count;
   } catch (error) {
     console.error('Database Error:', error);
@@ -83,10 +83,7 @@ export async function fetchTotalBeans() {
 export async function fetchTotalFavs() {
   noStore();
   try {
-    const data = await sql`
-      SELECT COUNT(*) AS count
-      FROM brews
-      WHERE favorite = 1`;
+    const data = await sql('SELECT COUNT(*) AS count FROM brews WHERE favorite = 1');
     return data.rows[0].count;
   } catch (error) {
     console.error('Database Error:', error);
@@ -97,9 +94,7 @@ export async function fetchTotalFavs() {
 export async function fetchAverageRating() {
   noStore();
   try {
-    const data = await sql`
-      SELECT ROUND(AVG(rating), 1) AS average
-      FROM brews`;
+    const data = await sql('SELECT ROUND(AVG(rating), 1) AS average FROM brews');
     return data.rows[0].average;
   } catch (error) {
     console.error('Database Error:', error);
@@ -110,8 +105,7 @@ export async function fetchAverageRating() {
 export async function fetchLowestRating() {
   noStore();
   try {
-    const data = await sql`
-      SELECT MIN(rating) AS lowest_rating FROM brews`;
+    const data = await sql('SELECT MIN(rating) AS lowest_rating FROM brews');
     return data.rows[0].lowest_rating;
   } catch (error) {
     console.error('Database Error:', error);
@@ -122,8 +116,7 @@ export async function fetchLowestRating() {
 export async function fetchHighestRating() {
   noStore();
   try {
-    const data = await sql`
-      SELECT MAX(rating) AS highest_rating FROM brews`;
+    const data = await sql('SELECT MAX(rating) AS highest_rating FROM brews');
     return data.rows[0].highest_rating;
   } catch (error) {
     console.error('Database Error:', error);
